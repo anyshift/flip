@@ -1,0 +1,36 @@
+spring:
+  profiles:
+    active: dev
+
+  application:
+    name: Flip
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    username: root
+    password: '00000000'
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/flip?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 3MB
+      max-request-size: 100MB
+  thymeleaf:
+    mode: HTML
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false #关闭thymeleaf的页面缓存功能
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.flip.entity
+  global-config:
+    db-config:
+      id-type: assign_id #默认是雪花算法生成ID，这里显式写出来了
+      logic-delete-value: 1 #逻辑删除记录的值
+      logic-not-delete-value: 0 #逻辑未删除记录的值
+      logic-delete-field: deleted #逻辑删除对应的字段名
+
+avatar:
+  remote-prefix: https://cravatar.cn/avatar/
+  remote-suffix: ?d=retro

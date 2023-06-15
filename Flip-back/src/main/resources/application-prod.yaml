@@ -1,0 +1,66 @@
+server:
+  port: 8080
+
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /flip
+    listener:
+      simple:
+        acknowledge-mode: manual #手动ACK
+  mail:
+    host: smtp.qq.com
+    default-encoding: UTF-8
+    username: abc@xx.com
+    password: as********ebh
+    properties:
+      mail:
+        smtp:
+          auth: true #使用SMTP身份验证
+          starttls:
+            enable: true #开启SSL安全协议
+            required: true
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印SQL日志
+
+#关于CORS跨域的自定义属性
+cors:
+  allowed-address: "https://xx.com/" #允许跨域的域名地址
+
+elasticsearch:
+  host: localhost
+  port: 9200
+
+#关于JWT的自定义属性
+jwt:
+  token-header: Authorization
+  token-prefix: "Bearer "
+  secret: "TA61ja7A@a3*****fQEOQ1azGK"
+  accessTokenTTL: 3600000 #accessToken过期时间，单位毫秒，3600000毫秒为两小时
+  refreshTokenTTL: 604800000 #refreshToken过期时间，单位毫秒，604800000毫秒为7天
+
+#关于邮件的自定义属性
+mail:
+  from: anyshift@qq.com #发送邮件的来源
+  register:
+    subject: "请查收您的验证码" #注册邮件的主题
+
+#关于上传的自定义属性
+upload:
+  avatarPath: "/www/wwwroot/flip/frontend/static/avatar/" #头像真实存储路径
+  staticPath: "/www/wwwroot/flip/frontend/static/static/" #静态文件真实存储路径
+  avatarMapperPath: "/avatar/" #头像的虚拟映射路径
+  staticMapperPath: '/static/' #静态文件的虚拟映射路径
+
+avatar:
+  prefix: "https://xx.com/static"

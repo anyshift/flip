@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flip.mapper.PostMapper"> <!--namespace要和接口的全类名保持一致-->
+    <select id="getNewestPost" resultType="Post">
+        SELECT id, uid, title, create_time, priority, status, `type`, reply_number, view_number
+        FROM post
+        ORDER BY create_time DESC
+    </select>
+</mapper>

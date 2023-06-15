@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flip.mapper.TagMapper"> <!--namespace要和接口的全类名保持一致-->
+    <insert id="insertPostTags">
+        INSERT INTO post_tags
+        VALUES (#{pid}, #{tagLabel}, #{tagName}, #{uid})
+    </insert>
+
+    <select id="loadPostTagsByPostId" resultType="Tag">
+        SELECT tag_label, tag_name
+        FROM tag_post
+        WHERE pid = #{pid}
+    </select>
+
+    <delete id="deleteTagsNameByPostId">
+        DELETE FROM post_tags WHERE pid = #{pid}
+    </delete>
+
+    <select id="loadPostsIdByTagName" resultType="String">
+        SELECT pid
+        FROM tag_post
+        WHERE tag_name = #{tagName} LIMIT #{start}, #{size}
+    </select>
+
+    <select id="loadPostsCountByTagName" resultType="Integer">
+        SELECT count(*)
+        FROM tag_post
+        WHERE tag_name = #{tagName}
+    </select>
+</mapper>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flip.mapper.RoleMapper"> <!--namespace要和接口的全类名保持一致-->
+    <select id="loadUserRoleByUid" resultType="Role">
+        SELECT *
+        FROM role
+            JOIN user_role AS u_r
+                ON role.rid = u_r.rid
+                       AND u_r.uid = #{uid}
+    </select>
+</mapper>

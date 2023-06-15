@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flip.mapper.UserMapper"> <!--namespace要和接口的全类名保持一致-->
+    <insert id="insertUserRole">
+        INSERT INTO user_role(uid, rid) VALUES (#{uid}, #{rid})
+    </insert>
+
+    <update id="updateUserRole">
+        UPDATE user_role SET rid = #{rid} WHERE uid = #{uid}
+    </update>
+</mapper>

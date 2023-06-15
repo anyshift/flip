@@ -1,0 +1,85 @@
+html {
+    --el-bg-color: #f5f7fa !important; /*主背景色*/
+    --el-menu-active-color: #3366ff !important; /*菜单激活状态颜色*/
+    --el-menu-item-font-size: 15px !important; /*Header菜单文字大小*/
+
+    --custom-tabs-color: #606266;
+
+    --custom-border-color: #d5d7de; /*自定义边框颜色*/
+    --custom-header-bg-color: white; /*头部背景颜色*/
+    --custom-footer-bg-color: white; /*底部背景颜色*/
+
+    --custom-trend-header-bg-color: #D4D7DE; /*主体trend头部背景颜色，如首页节点处颜色和浏览帖子处内容头部背景颜色*/
+    --custom-trend-header-color: #696969;/*主页trend头部文字颜色*/
+
+    --custom-text-color: #222; /*正文文字颜色，如帖子标题、帖子内容等处的颜色*/
+    --custom-text-bg-color: white; /*正文背景颜色*/
+
+    --custom-divider-border-color: #dcdfe6; /*分割线边框颜色*/
+
+    --custom-trend-td-bottom-color: #eaeaea; /*主页trend处帖子列表底部边框颜色*/
+    --custom-trend-tr-color: #333; /*主页trend处帖子列表集tr的文字颜色*/
+    --custom-trend-tr-time-color: #999; /*主页trend处帖子列表集tr中的时间的文字颜色*/
+
+    --custom-breadcrumb-color: #808080 !important; /*面包屑字体颜色*/
+
+    --custom-reply-num-bg-color: #dae6ef; /*Main列表中帖子回复数背景颜色*/
+    --custom-reply-num-color: #626f84; /*Main列表中帖子回复数文字颜色*/
+    --custom-view-num-bg-color: #e8edf2; /*Main列表中帖子查看数背景颜色*/
+    --custom-view-num-color: #999; /*Main列表中帖子查看数文字颜色*/
+
+    --custom-post-header-details-color: #808080; /*查看/回复/感谢文字颜色*/
+
+    --custom-border-radius: 0.4rem; /*自定义全局border radius*/
+
+    --custom-card-bg-color: #fcfdfd; /*卡片背景颜色*/
+
+    --custom-aside-menu-bg-color: white; /*Aside背景颜色*/
+
+    --custom-aside-box-shadow: 0 0 3px rgb(18 18 18 / 10%); /*阴影*/
+
+    --custom-tabs-border-color: #ebebeb;
+}
+
+
+html.dark {
+    --el-bg-color: #333840 !important; /* 主背景色 */
+    --el-menu-border-color: #323840 !important; /* 顶部底部上下边框颜色 */
+    --el-bg-color-overlay: #2a3039 !important; /*主页帖子列表table背景颜色*/
+    --el-menu-text-color: #f5f5f5 !important; /*头部Menu文字颜色*/
+
+    --custom-tabs-color: #caced7;
+
+    --custom-border-color: #3f444e; /*边框颜色*/
+    --custom-header-bg-color: #232830; /*Header背景颜色*/
+    --custom-footer-bg-color: #232830; /*Footer背景颜色*/
+
+    --custom-trend-header-bg-color: #232830; /*主页trend头部背景颜色，如首页节点处背景颜色和浏览帖子处内容头部背景颜色*/
+    --custom-trend-header-color: #f5f5f5; /*主页trend头部文字颜色*/
+
+    --custom-text-bg-color: #2a3039; /*正文背景颜色*/
+    --custom-text-color: #E4E7ED; /*正文文字颜色，如帖子标题、帖子内容等处的颜色*/
+
+    --custom-divider-border-color: #474c57; /*分割线边框颜色*/
+
+    --custom-trend-td-bottom-color: #333942; /*主页帖子列表中每个帖子的底部的边框颜色*/
+    --custom-trend-tr-color: #aab2bc; /*主页帖子列表集tr的文字颜色*/
+    --custom-trend-tr-time-color: #aab2bc; /*主页帖子列表集tr中的时间的文字颜色*/
+
+    --custom-breadcrumb-color: #f5f5f5 !important; /*面包屑字体颜色*/
+
+    --custom-reply-num-bg-color: #6c737e; /*Main列表中帖子回复数背景颜色*/
+    --custom-reply-num-color: #e8edf2; /*Main列表中帖子回复查看数文字颜色*/
+    --custom-view-num-bg-color: #4c5159; /*Main列表中帖子查看数背景颜色*/
+    --custom-view-num-color: #e8edf2; /*Main列表中帖子查看数文字颜色*/
+
+    --custom-post-header-details-color: #999; /*查看/回复/感谢文字颜色*/
+
+    --custom-avatar-border-color: #bdaf7f; /*头像边框颜色，边框颜色尽显暗色模式*/
+
+    --custom-card-bg-color: #2a3039; /*卡片背景颜色*/
+
+    --custom-aside-menu-bg-color: #333840; /*Aside背景颜色*/
+
+    --custom-tabs-border-color: transparent;
+}
