@@ -72,7 +72,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * 获取已登录用户的个人信息
      * @return 个人信息
      */
-
     @Override
     public Response<Object> getProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
