@@ -1,10 +1,10 @@
 package com.flip.config;
 
 import com.flip.filter.JwtAuthenticationFilter;
-import com.flip.handler.login.LogoutHandler;
-import com.flip.handler.login.LogoutSuccessHandlerImpl;
-import com.flip.handler.login.NoLoginHandler;
-import com.flip.handler.login.NoPermissionHandler;
+import com.flip.handler.LogoutHandler;
+import com.flip.handler.LogoutSuccessHandlerImpl;
+import com.flip.handler.NoLoginHandler;
+import com.flip.handler.NoPermissionHandler;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -140,7 +140,7 @@ public class SecurityConfig {
     }
 
     /**
-     * 配置CORS源
+     * 配置 CORS 源
      */
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();

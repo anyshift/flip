@@ -6,12 +6,12 @@ import org.springframework.core.annotation.Order;
 import java.lang.annotation.*;
 
 /**
- * 限制接口调用频率的注解（通用）
+ * 限制接口调用频率的注解
  */
 @Documented
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Order(Ordered.HIGHEST_PRECEDENCE) /* 设置最高优先级 */
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public @interface LimitRequest {
 
     /**
@@ -22,7 +22,7 @@ public @interface LimitRequest {
     /**
      * 第二个等待时长，单位秒，默认300秒
      */
-    long secondWatieTime() default 300;
+    long secondWaitTime() default 300;
 
     /**
      *  第三个等待时长，单位秒，默认600秒

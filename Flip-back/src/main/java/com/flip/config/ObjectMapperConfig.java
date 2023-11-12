@@ -19,9 +19,7 @@ import java.time.format.DateTimeFormatter;
 @Order(0)
 @Configuration
 public class ObjectMapperConfig {
-    /**
-     * 更改jackson默认配置
-     */
+
     @Bean
     public ObjectMapper objectMapper() {
 

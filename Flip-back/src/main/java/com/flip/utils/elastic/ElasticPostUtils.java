@@ -10,8 +10,9 @@ import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.indices.CreateIndexRequest;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
-import com.flip.entity.Post;
-import com.flip.entity.Tag;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.flip.domain.entity.Post;
+import com.flip.domain.entity.Tag;
 import com.flip.service.PostService;
 import lombok.Data;
 
@@ -60,14 +61,15 @@ public class ElasticPostUtils {
         List<BulkOperation> bulkOperations = new ArrayList<>();
 
         posts.forEach(post -> {
-            Map<String, Object> data = postService.getPostInfo(String.valueOf(post.getId())).getData();
-            Post tempPost = (Post) data.get("post");
+            QueryWrapper<Post> postQueryWrapper = new QueryWrapper<>();
+            postQueryWrapper.eq("id", post.getId());
+            Post tempPost = postService.getOne(postQueryWrapper);
             post.setContent(StrUtil.cleanBlank(HtmlUtil.cleanHtmlTag(post.getContent())));
 
-            List<Tag> tags = tempPost.getTags(); post.setTags(tags);
-            String username = (String) data.get("username"); post.setAuthor(username);
-            String nickname = (String) data.get("nickname"); post.setNickname(nickname);
-            String avatar = (String) data.get("avatar"); post.setAvatar(avatar);
+            post.setTags(tempPost.getTags());
+            post.setAuthor(tempPost.getAuthor());
+            post.setNickname(tempPost.getNickname());
+            post.setAvatar(tempPost.getAvatar());
 
             bulkOperations.add(BulkOperation.of(bo -> bo.index(io -> io.id(String.valueOf(post.getId())).document(post))));
         });

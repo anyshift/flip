@@ -10,9 +10,9 @@ import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.indices.CreateIndexRequest;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
-import com.flip.entity.Authority;
-import com.flip.entity.Role;
-import com.flip.entity.User;
+import com.flip.domain.entity.Authority;
+import com.flip.domain.entity.Role;
+import com.flip.domain.entity.User;
 import com.flip.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 

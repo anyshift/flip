@@ -1,6 +1,7 @@
 package com.flip.handler;
 
-import com.flip.domain.Response;
+import com.flip.common.Response;
+import com.flip.domain.enums.ResponseCode;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.security.core.AuthenticationException;
@@ -24,14 +25,14 @@ public class GlobalExceptionHandler {
      * @return 响应体
      */
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public Response<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public Response<Map<String, Object>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         Map<String, Object> map = new HashMap<>();
         e.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError)error).getField();
             String errorMsg = error.getDefaultMessage();
             map.put(fieldName, errorMsg);
         });
-        return Response.error(400, map);
+        return Response.failed("参数校验失败", map);
     }
 
     /**
@@ -40,11 +41,11 @@ public class GlobalExceptionHandler {
      * @return 响应体
      */
     @ExceptionHandler({ConstraintViolationException.class})
-    public Response<Object> handleConstraintViolationException(ConstraintViolationException e) {
+    public Response<String> handleConstraintViolationException(ConstraintViolationException e) {
         String message = e.getConstraintViolations().stream()
                 .map(ConstraintViolation::getMessage)
                 .collect(Collectors.joining(","));
-        return Response.error(400, message);
+        return Response.failed("参数校验失败", message);
     }
 
     /**
@@ -53,10 +54,10 @@ public class GlobalExceptionHandler {
      * @return 响应体
      */
     @ExceptionHandler({MissingServletRequestParameterException.class})
-    public Response<Object> handleMissingRequestParameterException(MissingServletRequestParameterException e) {
+    public Response<String> handleMissingRequestParameterException(MissingServletRequestParameterException e) {
         String parameterName = e.getParameterName();
         String message = "需要提供 " + parameterName + " 参数";
-        return Response.error(400, message);
+        return Response.failed("参数缺失", message);
     }
 
     /**
@@ -64,12 +65,12 @@ public class GlobalExceptionHandler {
      * @return 响应体
      */
     @ExceptionHandler({AuthenticationException.class})
-    public Response<Object> handleAuthenticationException(AuthenticationException e) {
-        return Response.error(403, "用户名或密码错误");
+    public Response<String> handleAuthenticationException(AuthenticationException e) {
+        return Response.failed(ResponseCode.FORBIDDEN.getCode(), "用户名或密码错误");
     }
 
     @ExceptionHandler({UsernameNotFoundException.class})
     public Response<Object> handleUsernameNotFoundException(UsernameNotFoundException e) {
-        return Response.error(403, e.getMessage());
+        return Response.failed(ResponseCode.FORBIDDEN.getCode(), e.getMessage());
     }
 }

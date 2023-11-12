@@ -4,7 +4,10 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flip.entity.dto.LoggedUser;
+import com.flip.domain.dto.LoggedUser;
+import com.flip.domain.entity.User;
+import com.flip.domain.enums.ResponseCode;
+import com.flip.service.UserService;
 import com.flip.utils.JwtUtils;
 import com.flip.utils.RedisKeyUtils;
 import io.jsonwebtoken.Claims;
@@ -41,6 +44,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Value("${jwt.token-prefix}")
     private String tokenPrefix;
 
+    @Value("${jwt.auto-refresh-ttl}")
+    private Long autoRefreshTTL;
+
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -48,18 +54,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Resource
-    private ObjectMapper objectMapper;
+    private UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
 
         String tokenFromRequestHeader = request.getHeader(tokenHeader);
         if (StrUtil.isBlank(tokenFromRequestHeader) || !tokenFromRequestHeader.startsWith(tokenPrefix)) {
-            /* 请求头中未携带token或token格式有误的话, 放行 */
-            filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response); /* 请求头中未携带token或token格式有误的话, 放行 */
             return;
         }
 
+        // 请求头中解析得到的 token 可能的类型有两种：accessToken 和 refreshToken，前者用于日常请求，后者用于刷新前者，实现不中断的操作体验
         String token = tokenFromRequestHeader.replace(tokenPrefix, "");
         String uid;
 
@@ -71,58 +77,65 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        String requestURI = request.getRequestURI();
         if (isTokenValid) {
             Claims claims = jwtUtils.parseTokenToClaims(token);
             String tokenType = claims.getAudience();
-            if (ObjectUtil.notEqual("/refresh", request.getRequestURI())) { // 非刷新token的操作
+            User user = userService.loadUserByUid(Long.parseLong(claims.getSubject()));
+            if (ObjectUtil.notEqual("/refresh", requestURI)) { // 非刷新凭证的操作
                 switch (tokenType) {
-                    case "refresh" -> {
+                    case "refresh":
                         uid = null;
-                        log.warn("The token with invalid type is carried by {}, need access type, but get refresh type.", claims.getSubject());
-                    }
-                    case "access" -> {
+                        log.warn("用户 '{}' 携带的凭证与请求类型不匹配", user.getUsername());
+                        break;
+                    case "access":
                         uid = claims.getSubject();
-                        if (ObjectUtil.notEqual("/logout", request.getRequestURI()) & (claims.getExpiration().getTime() - DateUtil.date().getTime()) <= 20 * 60 * 1000L) {
+                        if (ObjectUtil.notEqual("/logout", requestURI) & (claims.getExpiration().getTime() - DateUtil.date().getTime()) <= autoRefreshTTL) {
                             String accessToken = jwtUtils.createAccessToken(uid);
                             response.setHeader(tokenHeader, accessToken);
-                            log.info("{}'s token refreshed.", claims.getSubject());
+                            log.info("用户 '{}' 的 accessToken 临近过期且仍然活跃，已重新颁发", user.getUsername());
                         }
-                    }
-                    default -> {
+                        break;
+                    default:
                         uid = null;
-                        log.warn("{} carried an unknown type of token during non-refresh operation.", claims.getSubject());
-                    }
+                        log.warn("用户 '{}' 携带的凭证的类型有误", user.getUsername());
+                        break;
                 }
-            } else { //刷新token的操作
+            }  else { // 刷新凭证的操作
                 switch (tokenType) {
-                    case "access" -> {
+                    case "access":
                         uid = null;
-                        log.warn("The refreshToken with invalid type is carried by {}, need refresh type, but get access type.", claims.getSubject());
-                    }
-                    case "refresh" -> uid = claims.getSubject();
-                    default -> {
+                        log.warn("用户 '{}' 携带的凭证与请求类型不匹配", user.getUsername());
+                        break;
+                    case "refresh":
+                        uid = claims.getSubject();
+                        break;
+                    default: {
                         uid = null;
-                        log.warn("{} carries an unknown type of token during refresh operation.", claims.getSubject());
+                        log.warn("用户 '{}' 携带的凭证的类型有误", user.getUsername());
+                        break;
                     }
                 }
             }
         } else {
-            if (ObjectUtil.equal("/logout", request.getRequestURI())) {
-                log.info("{} token expired then auto logout (/logout).", jwtUtils.getExpiredTokenClaims(token).getSubject());
-                loggedOutRender(response); // 如果token过期，且访问的是/logout，则显示退出成功
+            if (ObjectUtil.equal("/logout", requestURI)) {
+                User user = userService.loadUserByUid(Long.parseLong(jwtUtils.getExpiredTokenClaims(token).getSubject()));
+                log.info("用户 '{}' 已退出登录", user.getUsername());
+                loggedOutRender(response); // 如果 accessToken 过期，且访问的是 "/logout"，则返回已退出的响应
                 return;
-            } else if (ObjectUtil.equal("/refresh", request.getRequestURI())) {
-                loginAgainRender(response); // refreshToken过期则需要重新登录
+            } else if (ObjectUtil.equal("/refresh", requestURI)) {
+                loginAgainRender(response); // refreshToken 过期则需要重新登录（JwtUtil中已打印此日志，此处省略过期日志的打印）
                 return;
             } else {
-                expireTokenRender(response); // accessToken过期则返回过期信息，前端再通过refreshToken尝试获取新的accessToken
+                expireTokenRender(response); // accessToken 过期则返回过期信息，前端再通过 refreshToken 尝试获取新的 accessToken
                 return;
             }
         }
 
         LoggedUser loggedUser = (LoggedUser) redisTemplate.opsForValue().get(RedisKeyUtils.getLoggedUserKey(uid));
         if (ObjectUtil.isNull(loggedUser)) {
-            log.info("{} needs to log in again, so auto logout", jwtUtils.getExpiredTokenClaims(token).getSubject());
+            User user = userService.loadUserByUid(Long.parseLong(jwtUtils.getExpiredTokenClaims(token).getSubject()));
+            log.info("用户 '{}' 的登录缓存丢失，已退出登录", user.getUsername());
             loginAgainRender(response);
             return;
         }
@@ -140,25 +153,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void expireTokenRender(HttpServletResponse response) throws IOException {
-        render(401, "登录凭证已过期", response);
+        render(ResponseCode.UNAUTHORIZED.getCode(), "访问凭证已过期", response);
     }
 
     private void loginAgainRender(HttpServletResponse response) throws IOException {
-        render(409, "请重新登录", response);
+        render(ResponseCode.AUTHENTICATION_EXPIRED.getCode(), "请重新登录", response);
     }
 
     private void invalidTokenRender(HttpServletResponse response) throws IOException {
-        render(412, "Invalid Token", response);
+        render(ResponseCode.PRECONDITION_FAILED.getCode(), "无效凭证", response);
     }
 
     private void loggedOutRender(HttpServletResponse response) throws IOException {
-        render(200, "已退出登录", response);
+        render(ResponseCode.SUCCESS.getCode(), "已退出登录", response);
     }
 
     private void render(int code, String msg, HttpServletResponse response)  throws IOException {
         Map<String, Object> map = new HashMap<>();
         map.put("code", code);
-        map.put("msg", msg);
+        map.put("message", msg);
 
         response.setContentType("application/json;charset=UTF-8");
 
@@ -166,6 +179,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .writerWithDefaultPrettyPrinter()
                 .writeValueAsString(map);
 
-        response.getWriter().println(result);
+        try {
+            response.getWriter().println(result);
+        } finally {
+            response.getWriter().close();
+        }
     }
 }

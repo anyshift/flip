@@ -1,20 +1,22 @@
 package com.flip.service;
 
-import com.flip.domain.Response;
-import com.flip.entity.Tag;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.flip.domain.entity.PostTag;
+import com.flip.domain.entity.Tag;
 
 import java.util.List;
 
-public interface TagService {
-    Response<Tag> addTag(Tag tag);
+public interface TagService extends IService<Tag> {
 
-    Response<List<Tag>> getAllTag();
+    List<Tag> getAllTag();
 
-    Response<Object> getTagAndPosts(String tagLabel, Integer currentPage);
+    IPage<PostTag> selectPostTagPage(IPage<PostTag> page, QueryWrapper<PostTag> queryWrapper);
 
-    Response<List<Tag>> updateTag(Tag tag);
+    Boolean isTagUsed(Tag tag);
 
-    Response<List<Tag>> deleteTag(Tag tag);
+    void updatePostTag(UpdateWrapper<PostTag> updateWrapper);
 
-    Response<List<Tag>> forceDeleteTag(Tag tag);
 }

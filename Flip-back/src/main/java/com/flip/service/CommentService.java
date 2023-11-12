@@ -1,14 +1,16 @@
 package com.flip.service;
 
-import com.flip.domain.Response;
-import com.flip.entity.Comment;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.flip.domain.entity.Comment;
 
-public interface CommentService {
-    Response<Object> getComments(String pid);
+import java.util.List;
 
-    Response<Object> getReplies(String pid, Integer parentId);
+public interface CommentService extends IService<Comment> {
 
-    Response<Object> doComment(Comment comment);
+    List<Comment> getComments(String pid);
 
-    Response<Object> doReply(Comment comment);
+    Integer getRepliesNumOfComment(Integer commentId);
+
+    List<Comment> getReplies(String pid, Integer parentId);
+
 }

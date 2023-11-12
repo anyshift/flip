@@ -2,7 +2,8 @@ package com.flip.aspect;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.flip.annotation.LimitRequest;
-import com.flip.domain.Response;
+import com.flip.common.Response;
+import com.flip.domain.enums.ResponseCode;
 import com.flip.utils.IpUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,7 @@ public class LimitRequestAspect {
     }
 
     /**
-     * 切点
+     * 切入点
      *
      * @param limitRequest 只要有该注解的方法就切入
      */
@@ -66,7 +67,7 @@ public class LimitRequestAspect {
         /* 获取当前线程的请求 */
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (ObjectUtil.isNull(requestAttributes)) {
-            return Response.error(500, "服务器发生错误");
+            return Response.failed(ResponseCode.INTERNAL_SERVER_ERROR.getCode(), "发生错误");
         }
 
         /* 获取当前请求的IP */
@@ -86,10 +87,10 @@ public class LimitRequestAspect {
         } else if (realRequestedTime == limit.limitRequestTime()) {
             long duration = switchDuration(IP, limit, methodName);
             redisTemplate.opsForValue().set(key, realRequestedTime, duration, TimeUnit.SECONDS);
-            return Response.error(400, limit.requestLimitedMsg());
+            return Response.failed(limit.requestLimitedMsg());
         } else {
             redisTemplate.opsForValue().increment(key); /* 记录中的 value + 1，不更新TTL */
-            return Response.error(400, limit.requestLimitedMsg());
+            return Response.failed(limit.requestLimitedMsg());
         }
 
         return joinPoint.proceed();
@@ -113,7 +114,7 @@ public class LimitRequestAspect {
             long timeout;
 
             if (hour >= 3 && hour < 15) timeout = limit.firstWaitTime();
-            else if (hour >= 15 && hour <= 19) timeout = limit.secondWatieTime();
+            else if (hour >= 15 && hour <= 19) timeout = limit.secondWaitTime();
             else timeout = limit.thirdWaitTime();
 
             redisTemplate.opsForValue().set(limitedTimeKey, limitedTime, timeout, TimeUnit.SECONDS);

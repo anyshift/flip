@@ -1,10 +1,10 @@
 package com.flip.service;
 
-import com.flip.domain.Response;
-import com.flip.entity.vo.BannedUser;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.flip.domain.entity.BannedUser;
 
-public interface BannedUserService {
-    Response<Object> banUser(BannedUser bannedUser);
+public interface BannedUserService extends IService<BannedUser> {
 
-    Response<Object> cancelBanUser(String uid);
+    void insertBannedHistory(Long uid, String createTime, String deadline, String reason);
+
 }

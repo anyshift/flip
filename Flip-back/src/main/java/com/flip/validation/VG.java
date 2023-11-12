@@ -10,6 +10,7 @@ import jakarta.validation.GroupSequence;
 @GroupSequence({VG.First.class, VG.Second.class, VG.Third.class, VG.Fourth.class, VG.Fifth.class,
         VG.Sixth.class, VG.Seventh.class, VG.Eighth.class, VG.Ninth.class, VG.Tenth.class})
 public interface VG {
+
     interface First {}
 
     interface Second {}
@@ -29,4 +30,5 @@ public interface VG {
     interface Ninth {}
 
     interface Tenth {}
+
 }

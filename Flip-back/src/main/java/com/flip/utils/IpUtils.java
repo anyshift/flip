@@ -12,28 +12,28 @@ import java.util.StringTokenizer;
 public class IpUtils {
     /**
      * 获取访问者ip
-     * @param request
-     * @return
+     * @param request request
+     * @return request ip
      */
     public static String getIP(HttpServletRequest request) {
         if (request == null) {
             return "unknown";
         }
         String ip = request.getHeader("x-forwarded-for");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-Forwarded-For");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-Real-IP");
         }
 
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
 
@@ -73,8 +73,8 @@ public class IpUtils {
     /**
      * 获取访问者操作系统
      *
-     * @param request
-     * @return
+     * @param request request
+     * @return OS
      */
     public static String getOS(HttpServletRequest request) {
         String agent = request.getHeader("User-Agent");
@@ -191,7 +191,7 @@ public class IpUtils {
      * @return byte 字节
      */
     public static byte[] textToNumericFormatV4(String text) {
-        if (text.length() == 0) {
+        if (text.isEmpty()) {
             return null;
         }
 

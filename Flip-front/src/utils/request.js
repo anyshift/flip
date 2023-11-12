@@ -37,6 +37,7 @@ instance.interceptors.request.use(config => {
 )
 
 instance.interceptors.response.use(response => {
+
         /*未设置状态码则默认成功状态*/
         const code = response.data.code || 200;
         /*二进制数据直接返回*/
@@ -73,13 +74,13 @@ instance.interceptors.response.use(response => {
                     promiseArray = [];
                 }).catch(err => {
                     console.log(err)
-                    if (err.code === 409 || err.code === 412) {router.push({path: '/login'}).then(r => {}).catch(e => {})}
+                    if (err.code === 419 || err.code === 412) {router.push({path: '/login'}).then(r => {}).catch(e => {})}
                 }).finally(() => {
                     isRefreshing = false;
                 })
             }
             return retryOriginalRequest;
-        } else if (code === 409) {
+        } else if (code === 419) {
             userStore().$reset();
             removeToken();
             ElMessage({
@@ -114,27 +115,29 @@ instance.interceptors.response.use(response => {
         }
     },
     error => {
-        if (error.response.status === 403) {
+        if (error.response?.status === 403) {
             ElMessage({
                 showClose: true,
-                message: errorMsg["403"],
+                message: '权限不足',
                 type: 'error',
                 duration: 2500
             })
-            return Promise.reject(errorMsg["403"]);
+            return Promise.reject('权限不足');
         }
         let {message} = error
         if (message === "Network Error") {
-            message = "远程服务器状态异常"
-            return Promise.reject(message)
+            error.message = "远程服务器状态异常"
+            return Promise.reject(error)
         } else if (message.includes("timeout")) {
-            message = "接口请求超时"
-            return Promise.reject(message)
+            error.message = "接口请求超时"
+            console.log("接口 \"" + error.config.url + "\" 请求超时")
+            return Promise.reject(error)
         } else if (message.includes("Request failed with status code")) {
-            message = "接口 \"" + error.config.url + "\" " + message.substring(32, 35) + " 异常";
-            return Promise.reject(message)
+            error.message = "接口异常";
+            console.log("接口 \"" + error.config.url + "\" " + message.substring(32, 35) + " 异常")
+            return Promise.reject(error)
         }
-        return Promise.reject(error.data)
+        return Promise.reject(error)
     }
 )
 

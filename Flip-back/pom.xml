@@ -9,14 +9,21 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>cool.tsai</groupId>
+    <groupId>com.flip</groupId>
     <artifactId>Flip-back</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-
     <name>Flip-back</name>
     <description>Flip-back</description>
+
     <properties>
         <java.version>17</java.version>
+        <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
+        <hutool.version>5.8.22</hutool.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <jjwt.version>0.11.5</jjwt.version>
+        <toolgood-words.version>3.1.0.0</toolgood-words.version>
+        <elasticsearch-java.version>8.7.0</elasticsearch-java.version>
+        <oshi-core.version>6.4.2</oshi-core.version>
     </properties>
 
     <dependencies>
@@ -39,21 +46,21 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.5.3.1</version>
+            <version>${mybatis-plus.version}</version>
         </dependency>
 
         <!-- hutool -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.9</version>
+            <version>${hutool.version}</version>
         </dependency>
 
         <!-- 提供一系列工具类，如 RandomStringUtils、StringUtils、NumberUtils 等 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.12.0</version>
+            <version>${commons-lang3.version}</version>
         </dependency>
 
         <!-- Redis -->
@@ -84,18 +91,18 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
-            <version>0.11.5</version>
+            <version>${jjwt.version}</version>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
-            <version>0.11.5</version>
+            <version>${jjwt.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
-            <version>0.11.5</version>
+            <version>${jjwt.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -103,21 +110,21 @@
         <dependency>
             <groupId>io.github.toolgood</groupId>
             <artifactId>toolgood-words</artifactId>
-            <version>3.1.0.0</version>
+            <version>${toolgood-words.version}</version>
         </dependency>
 
         <!-- ElasticSearch -->
         <dependency>
             <groupId>co.elastic.clients</groupId>
             <artifactId>elasticsearch-java</artifactId>
-            <version>8.7.0</version>
+            <version>${elasticsearch-java.version}</version>
         </dependency>
 
         <!-- 监控系统状态 -->
         <dependency>
             <groupId>com.github.oshi</groupId>
             <artifactId>oshi-core</artifactId>
-            <version>6.4.2</version>
+            <version>${oshi-core.version}</version>
         </dependency>
 
         <dependency>

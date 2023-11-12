@@ -19,10 +19,10 @@ public class RedisConfig {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(lettuceConnectionFactory);
 
-        /* 使用GenericJackson2JsonRedisSerializer替换默认序列化 */
+        /* 使用 GenericJackson2JsonRedisSerializer 替换默认序列化 */
         GenericJackson2JsonRedisSerializer jacksonSerializer = new GenericJackson2JsonRedisSerializer();
 
-        /* 设置 key 和 value 的序列化规则（key为String，value为JSON） */
+        /* 设置 key 和 value 的序列化规则（key is String，value is JSON） */
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(jacksonSerializer);
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());

@@ -1,7 +1,7 @@
 package com.flip.service.impl;
 
-import com.flip.entity.dto.LoggedUser;
-import com.flip.entity.User;
+import com.flip.domain.dto.LoggedUser;
+import com.flip.domain.entity.User;
 import com.flip.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,4 +22,5 @@ public class UserDetailServiceImpl implements UserDetailsService {
         User user = userService.loadUserByUsername(username);
         return new LoggedUser(user);
     }
+
 }

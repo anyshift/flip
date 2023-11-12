@@ -236,6 +236,8 @@ const router = createRouter({
 /* 全局守卫 */
 router.beforeEach((to, from, next) => {
 
+    NProgress.start();
+
     /* 修改标题 */
     if (to.meta.title) {
         document.title = to.meta.title
@@ -265,12 +267,11 @@ router.beforeEach((to, from, next) => {
         } else {
             if (useUserStore().role.length === 0) {
                 setTimeout(() => {
-                    NProgress.start();
                     useUserStore().getProfile().then(response => {
                         useUserStore().isLogin = true;
                         useUserStore().token = getToken();
                         if (to.meta.requireAdmin) {
-                            let isADMIN = useUserStore().role.some(role => {
+                            const isADMIN = useUserStore().role.some(role => {
                                 return role.includes('ADMIN')
                             });
                             if (!isADMIN) {
@@ -295,7 +296,7 @@ router.beforeEach((to, from, next) => {
                                 next({name: 'error'})
                             }
                         } else {
-                            if (error.code === 412 || error.code === 409) {
+                            if (error.code === 412 || error.code === 419) {
                                 next({path: '/login'})
                             }
                         }

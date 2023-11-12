@@ -1,26 +1,26 @@
 package com.flip.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.flip.domain.Response;
-import com.flip.entity.Post;
-import com.flip.entity.Tag;
+import com.flip.domain.entity.Post;
+import com.flip.domain.entity.PostTag;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PostService extends IService<Post> {
-    Response<String> doPost(Post post);
 
-    Response<Object> getLatestPostList(Integer currentPage);
+    void savePostTag(PostTag postTag);
 
-    Response<Object> getPostInfo(String pid);
+    Map<String, Object> getLatestPostList(Integer currentPage);
 
-    Response<Object> doEditContent(Post post);
+    Map<String, Object> getALlPostList(Integer page);
 
-    Response<Object> doEditTitle(String pid, String title);
+    Map<String, Object> getHotPostList(Integer page);
 
-    Response<Object> getALlPostList(Integer page);
+    void deletePostTags(Long pid);
 
-    Response<Object> getHotPostList(Integer page);
+    void addTagToPost(PostTag postTag);
 
-    Response<List<Tag>> changeTagOfPost(Post post);
+    List<PostTag> getPostTags(String pid);
+
 }
