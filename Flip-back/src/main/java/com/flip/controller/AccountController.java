@@ -269,7 +269,7 @@ public class AccountController {
         if (accountService.checkUsernameUnique(username)) {
             return Response.success("校验通过");
         }
-        return Response.success("用户名已存在");
+        return Response.failed("用户名已存在");
     }
 
     /**

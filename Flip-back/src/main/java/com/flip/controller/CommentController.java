@@ -38,7 +38,7 @@ public class CommentController {
             }
             return Response.success("获取评论列表成功", Map.of("comments", comments));
         }
-        return Response.success(400, "获取评论列表失败");
+        return Response.failed("获取评论列表失败");
     }
 
     @GetMapping("/getReplies")

@@ -236,8 +236,6 @@ const router = createRouter({
 /* 全局守卫 */
 router.beforeEach((to, from, next) => {
 
-    NProgress.start();
-
     /* 修改标题 */
     if (to.meta.title) {
         document.title = to.meta.title
@@ -258,9 +256,9 @@ router.beforeEach((to, from, next) => {
         to.meta.bodyTransition = 'fade';
     }
 
-
     /*如果localStorage存有token，则代表已登录，会去判断已登录用户信息是否完整，不完整的话会拉取登录用户的信息存到pinia，一次存取，除非刷新或重开页面，否则不会二次获取用户信息*/
     if (tokenExists()) {
+        NProgress.start();
         if (to.path === '/login' || to.path === '/register') {
             document.title = global_title;
             next({path: '/'});

@@ -11,12 +11,12 @@ public class TestController {
     @PreAuthorize("hasRole('MODERATOR')")
     @GetMapping("/testRole")
     public Response<Object> testRole() {
-        return Response.success(200, "测试角色成功");
+        return Response.success("测试角色成功");
     }
 
     @GetMapping("/testPermission")
     public Response<Object> testPermission() {
-        return Response.success(200, "测试权限成功");
+        return Response.success("测试权限成功");
     }
 
 }

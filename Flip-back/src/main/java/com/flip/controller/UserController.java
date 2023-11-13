@@ -154,7 +154,7 @@ public class UserController {
         LoggedUser loggedUser = LoggedUserUtils.getLoggedUser();
 
         if (Objects.equals(loggedUser.getUser().getNickname(), nickname)) {
-            return Response.success(200, "昵称无变化");
+            return Response.success("昵称无变化");
         }
 
         if (!userService.checkNicknameUnique(nickname, loggedUser)) {
@@ -216,7 +216,7 @@ public class UserController {
             loggedUser.getUser().setPassword(encodeNewPassword);
             String loggedUserKey = RedisKeyUtils.getLoggedUserKey(String.valueOf(loggedUser.getUser().getUid()));
             redisTemplate.opsForValue().set(loggedUserKey, loggedUser);
-            return Response.success(200, "密码修改成功");
+            return Response.success("密码修改成功");
         }
         return Response.failed("发生未知错误");
     }

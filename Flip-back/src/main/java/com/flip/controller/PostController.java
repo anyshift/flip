@@ -154,13 +154,16 @@ public class PostController {
     @GetMapping("/list")
     public Response<Map<String, Object>> getPostList(@RequestParam String node, @RequestParam(required = false) Integer page) {
 
-        if ("latestPost".equalsIgnoreCase(node)) return Response.success("", postService.getLatestPostList(page));
+        if ("latestPost".equalsIgnoreCase(node))
+            return Response.success("获取最新帖子成功", postService.getLatestPostList(page));
 
-        if ("allPost".equalsIgnoreCase(node)) return Response.success("", postService.getALlPostList(page));
+        if ("allPost".equalsIgnoreCase(node))
+            return Response.success("获取所有帖子成功", postService.getALlPostList(page));
 
-        if ("hotPost".equalsIgnoreCase(node)) return Response.success("", postService.getHotPostList(page));
+        if ("hotPost".equalsIgnoreCase(node))
+            return Response.success("获取热门帖子成功", postService.getHotPostList(page));
 
-        return null;
+        return Response.failed("节点错误");
     }
 
     /**

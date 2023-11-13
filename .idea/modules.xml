@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Flip-front/Flip-front.iml" filepath="$PROJECT_DIR$/Flip-front/Flip-front.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/flip.iml" filepath="$PROJECT_DIR$/.idea/flip.iml" />
     </modules>
   </component>

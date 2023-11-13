@@ -74,7 +74,7 @@ public class SearchController {
 
     @PostMapping("/addPosts")
     public Response<String> insertAllPostToEs() {
-        boolean success = false;
+        boolean success;
         try {
             success = ElasticPostUtils.insertAllPostByBulkOperation(elasticsearchClient, postService);
         } catch (IOException e) {
@@ -87,7 +87,7 @@ public class SearchController {
 
     @PostMapping("/addUsers")
     public Response<String> insertAllUserToEs() {
-        boolean success = false;
+        boolean success;
         try {
             success = ElasticUserUtils.insertAllUserByBulkOperation(elasticsearchClient, userService);
         } catch (IOException e) {

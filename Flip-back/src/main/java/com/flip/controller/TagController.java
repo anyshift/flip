@@ -122,7 +122,7 @@ public class TagController {
         tagLabelQueryWrapper.eq("label", tag.getLabel());
         boolean tagLabelExist = tagService.exists(tagLabelQueryWrapper);
         if (tagLabelExist) {
-            return Response.failed(400, "标签英文标识已存在");
+            return Response.failed("标签英文标识已存在");
         }
 
         LoggedUser loggedUser = LoggedUserUtils.getLoggedUser();
@@ -268,7 +268,7 @@ public class TagController {
         boolean deleted = tagOptionService.remove(tagOptionQueryWrapper);
         if (deleted) {
             redisTemplate.delete(tagOptionsKey);
-            return getAllTagOptions();
+            return Response.success("删除标签类型成功", tagOptionService.getAllTagOptions());
         } return Response.failed("删除标签类型失败");
     }
 
