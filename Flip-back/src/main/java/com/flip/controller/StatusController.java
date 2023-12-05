@@ -5,7 +5,7 @@ import com.flip.mapper.PostMapper;
 import com.flip.mapper.UserMapper;
 import com.flip.utils.RedisKeyUtils;
 import com.flip.utils.SystemUtils;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,16 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class StatusController {
 
-    @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    @Resource
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
-    @Resource
-    private PostMapper postMapper;
+    private final PostMapper postMapper;
 
     @GetMapping("/systemInfo")
     public Response<Object> getSystemInfo() {

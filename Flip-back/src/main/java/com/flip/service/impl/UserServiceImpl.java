@@ -12,7 +12,7 @@ import com.flip.mapper.AuthorityMapper;
 import com.flip.mapper.RoleMapper;
 import com.flip.mapper.UserMapper;
 import com.flip.service.UserService;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,16 +22,14 @@ import java.util.List;
 
 @Service
 @Validated
+@RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
-    @Resource
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
-    @Resource
-    private RoleMapper roleMapper;
+    private final RoleMapper roleMapper;
 
-    @Resource
-    private AuthorityMapper authorityMapper;
+    private final AuthorityMapper authorityMapper;
 
     @Override
     public void updateUserRole(Long uid, Integer rid) {

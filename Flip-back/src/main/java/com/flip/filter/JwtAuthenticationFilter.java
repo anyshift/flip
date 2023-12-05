@@ -11,12 +11,12 @@ import com.flip.service.UserService;
 import com.flip.utils.JwtUtils;
 import com.flip.utils.RedisKeyUtils;
 import io.jsonwebtoken.Claims;
-import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -36,6 +36,7 @@ import java.util.Map;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Value("${jwt.token-header}")
@@ -47,14 +48,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Value("${jwt.auto-refresh-ttl}")
     private Long autoRefreshTTL;
 
-    @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    @Resource
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {

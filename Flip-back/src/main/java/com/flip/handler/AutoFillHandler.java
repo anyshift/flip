@@ -23,7 +23,6 @@ public class AutoFillHandler implements MetaObjectHandler {
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        strictUpdateFill(metaObject, "updateTime",
-                String.class, LocalDateTime.now().format(dateTimeFormatter));
+        strictUpdateFill(metaObject, "updateTime", String.class, LocalDateTime.now().format(dateTimeFormatter));
     }
 }

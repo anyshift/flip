@@ -6,6 +6,7 @@ import com.flip.domain.entity.SensitiveWord;
 import com.flip.service.SensitiveWordService;
 import com.flip.utils.RedisKeyUtils;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +17,14 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/sys-ctrl")
+@RequiredArgsConstructor
 public class SensitiveController {
 
     private final String sensitiveObjsKey = RedisKeyUtils.getSensitiveObjsKey();
 
-    @Resource
-    private SensitiveWordService sensitiveWordService;
+    private final SensitiveWordService sensitiveWordService;
 
-    @Resource
-    private RedisTemplate<String, SensitiveWord> redisTemplate;
+    private final RedisTemplate<String, SensitiveWord> redisTemplate;
 
     @PostMapping("/sensitiveWord")
     public Response<Map<String, SensitiveWord>> addSensitiveWord(@RequestBody SensitiveWord sensitiveWord) {

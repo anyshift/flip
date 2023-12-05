@@ -16,6 +16,7 @@ import com.flip.utils.LoggedUserUtils;
 import com.flip.utils.RedisKeyUtils;
 import com.flip.validation.VG;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -27,26 +28,22 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class TagController {
 
     private final String tagsKey = RedisKeyUtils.getTagsKey();
 
     private final String tagOptionsKey = RedisKeyUtils.getTagOptionsKey();
 
-    @Resource
-    private TagService tagService;
+    private final TagService tagService;
 
-    @Resource
-    private TagOptionService tagOptionService;
+    private final TagOptionService tagOptionService;
 
-    @Resource
-    private PostService postService;
+    private final PostService postService;
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @GetMapping("/tags")
     public Response<Map<String, List<Tag>>> getAllTag() {

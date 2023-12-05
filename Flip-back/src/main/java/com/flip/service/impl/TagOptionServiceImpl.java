@@ -7,7 +7,7 @@ import com.flip.mapper.TagOptionMapper;
 import com.flip.service.TagOptionService;
 import com.flip.service.TagService;
 import com.flip.utils.RedisKeyUtils;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -17,18 +17,16 @@ import java.util.Map;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class TagOptionServiceImpl extends ServiceImpl<TagOptionMapper, TagOption> implements TagOptionService {
 
     private final String tagOptionsKey = RedisKeyUtils.getTagOptionsKey();
 
-    @Resource
-    private TagOptionMapper tagOptionMapper;
+    private final TagOptionMapper tagOptionMapper;
 
-    @Resource
-    private TagService tagService;
+    private final TagService tagService;
 
-    @Resource
-    private RedisTemplate<String, TagOption> redisTemplate;
+    private final RedisTemplate<String, TagOption> redisTemplate;
 
     @Override
     public List<TagOption> getAllTagOptions() {

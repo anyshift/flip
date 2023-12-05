@@ -8,11 +8,10 @@ import com.flip.domain.entity.Post;
 import com.flip.domain.entity.User;
 import com.flip.domain.enums.ResponseCode;
 import com.flip.service.PostService;
-import com.flip.service.SearchService;
 import com.flip.service.UserService;
 import com.flip.utils.elastic.ElasticPostUtils;
 import com.flip.utils.elastic.ElasticUserUtils;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -22,19 +21,14 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/search")
+@RequiredArgsConstructor
 public class SearchController {
 
-    @Resource
-    private SearchService searchService;
+    private final ElasticsearchClient elasticsearchClient;
 
-    @Resource
-    private ElasticsearchClient elasticsearchClient;
+    private final PostService postService;
 
-    @Resource
-    private PostService postService;
-
-    @Resource
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("/post")
     public Response<Map<String, List<Post>>> searchPostsByKey(@RequestParam String keyword) {

@@ -23,7 +23,7 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml
-  type-aliases-package: com.flip.entity
+  type-aliases-package: com.flip.domain.entity
   global-config:
     db-config:
       id-type: assign_id #默认是雪花算法生成ID，这里显式写出来了

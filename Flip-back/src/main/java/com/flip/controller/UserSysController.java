@@ -4,11 +4,14 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.flip.common.Response;
-import com.flip.domain.entity.*;
+import com.flip.domain.entity.Authority;
+import com.flip.domain.entity.BannedUser;
+import com.flip.domain.entity.Role;
+import com.flip.domain.entity.User;
 import com.flip.service.BannedUserService;
 import com.flip.service.UserService;
 import com.flip.utils.elastic.ElasticUserUtils;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -19,15 +22,14 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/sys-ctrl")
+@RequiredArgsConstructor
 public class UserSysController {
-    @Resource
-    private UserService userService;
 
-    @Resource
-    BannedUserService bannedUserService;
+    private final UserService userService;
 
-    @Resource
-    private ElasticsearchClient elasticsearchClient;
+    private final BannedUserService bannedUserService;
+
+    private final ElasticsearchClient elasticsearchClient;
 
     @GetMapping("/users")
     public Response<Map<String, List<User>>> getAllUser() {

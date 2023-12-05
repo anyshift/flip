@@ -8,10 +8,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.flip.domain.entity.PostTag;
 import com.flip.domain.entity.Tag;
 import com.flip.domain.entity.TagOption;
-import com.flip.mapper.*;
+import com.flip.mapper.PostTagMapper;
+import com.flip.mapper.TagMapper;
+import com.flip.mapper.TagOptionMapper;
 import com.flip.service.TagService;
 import com.flip.utils.RedisKeyUtils;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -21,21 +23,18 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagService {
 
     private final String tagsKey = RedisKeyUtils.getTagsKey();
 
-    @Resource
-    private TagMapper tagMapper;
+    private final TagMapper tagMapper;
 
-    @Resource
-    private TagOptionMapper tagOptionMapper;
+    private final TagOptionMapper tagOptionMapper;
 
-    @Resource
-    private PostTagMapper postTagMapper;
+    private final PostTagMapper postTagMapper;
 
-    @Resource
-    private RedisTemplate<String, Tag> redisTemplate;
+    private final RedisTemplate<String, Tag> redisTemplate;
 
     @Override
     public List<Tag> getAllTag() {

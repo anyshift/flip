@@ -11,22 +11,21 @@ import com.flip.service.PostService;
 import com.flip.service.SensitiveWordService;
 import com.flip.utils.SensitiveWordUtils;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class CommentController {
 
-    @Resource
-    private CommentService commentService;
+    private final CommentService commentService;
 
-    @Resource
-    private SensitiveWordService sensitiveWordService;
+    private final SensitiveWordService sensitiveWordService;
 
-    @Resource
-    private PostService postService;
+    private final PostService postService;
 
     @GetMapping("/getComments")
     public Response<Map<String, Object>> getComments(@RequestParam String pid) {

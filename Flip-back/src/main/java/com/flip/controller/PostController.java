@@ -18,6 +18,7 @@ import com.flip.utils.SensitiveWordUtils;
 import com.flip.utils.elastic.ElasticPostUtils;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,22 +29,18 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class PostController {
 
-    @Resource
-    private PostService postService;
+    private final PostService postService;
 
-    @Resource
-    private SensitiveWordService sensitiveWordService;
+    private final SensitiveWordService sensitiveWordService;
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource
-    private ElasticsearchClient elasticsearchClient;
+    private final ElasticsearchClient elasticsearchClient;
 
-    @Resource
-    private TagService tagService;
+    private final TagService tagService;
 
     /**
      * 发布帖子

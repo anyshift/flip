@@ -12,7 +12,7 @@ import com.flip.mapper.PostMapper;
 import com.flip.mapper.PostTagMapper;
 import com.flip.mapper.UserMapper;
 import com.flip.service.PostService;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,16 +21,14 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
 
-    @Resource
-    private PostMapper postMapper;
+    private final PostMapper postMapper;
 
-    @Resource
-    private PostTagMapper postTagMapper;
+    private final PostTagMapper postTagMapper;
 
-    @Resource
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
     @Override
     public void savePostTag(PostTag postTag) {

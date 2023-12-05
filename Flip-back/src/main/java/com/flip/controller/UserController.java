@@ -15,9 +15,9 @@ import com.flip.utils.LoggedUserUtils;
 import com.flip.utils.RedisKeyUtils;
 import com.flip.utils.elastic.ElasticUserUtils;
 import com.flip.validation.VG;
-import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +43,7 @@ import java.util.Objects;
 @Slf4j
 @Validated(VG.class)
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
     /**
@@ -63,17 +64,13 @@ public class UserController {
     @Value("${avatar.prefix}")
     private String avatarPrefix;
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource
-    private PostService postService;
+    private final PostService postService;
 
-    @Resource
-    private RedisTemplate<String, LoggedUser> redisTemplate;
+    private final RedisTemplate<String, LoggedUser> redisTemplate;
 
-    @Resource
-    private ElasticsearchClient elasticsearchClient;
+    private final ElasticsearchClient elasticsearchClient;
 
     @GetMapping("/profile")
     public Response<Object> getProfile() {

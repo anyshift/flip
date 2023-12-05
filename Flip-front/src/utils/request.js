@@ -40,10 +40,13 @@ instance.interceptors.response.use(response => {
 
         /*未设置状态码则默认成功状态*/
         const code = response.data.code || 200;
+
         /*二进制数据直接返回*/
         if (response.request.responseType === 'blob' || response.request.responseType === 'arraybuffer') {
             return response.data;
         }
+
+        // 如果任意一个响应的响应头中包含Authorization字段，则取出该字段的值（该字段用于存放刷新后的访问凭证）
         if (response.headers['authorization']) {
             setToken(response.headers['authorization']);
             userStore().token = response.headers['authorization'];

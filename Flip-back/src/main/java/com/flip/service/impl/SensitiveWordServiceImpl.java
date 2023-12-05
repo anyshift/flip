@@ -6,27 +6,25 @@ import com.flip.domain.entity.SensitiveWord;
 import com.flip.mapper.SensitiveWordMapper;
 import com.flip.service.SensitiveWordService;
 import com.flip.utils.RedisKeyUtils;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SensitiveWordServiceImpl extends ServiceImpl<SensitiveWordMapper, SensitiveWord> implements SensitiveWordService {
 
     private final String sensitiveObjsKey = RedisKeyUtils.getSensitiveObjsKey();
 
     private final String sensitiveWordsKey = RedisKeyUtils.getSensitiveWordsKey();
 
-    @Resource
-    private SensitiveWordMapper sensitiveWordMapper;
+    private final SensitiveWordMapper sensitiveWordMapper;
 
-    @Resource
-    private RedisTemplate<String, SensitiveWord> redisTemplate;
+    private final RedisTemplate<String, SensitiveWord> redisTemplate;
 
-    @Resource
-    private RedisTemplate<String, String> stringRedisTemplate;
+    private final RedisTemplate<String, String> stringRedisTemplate;
 
     @Override
     public List<SensitiveWord> getSensitiveWords() {

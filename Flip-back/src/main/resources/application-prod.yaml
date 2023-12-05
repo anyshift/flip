@@ -52,7 +52,7 @@ jwt:
 
 #关于邮件的自定义属性
 mail:
-  from: anyshift@qq.com #发送邮件的来源
+  from: abc@qq.com #发送邮件的来源
   register:
     subject: "请查收您的验证码" #注册邮件的主题
 

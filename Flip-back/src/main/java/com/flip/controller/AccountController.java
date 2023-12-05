@@ -25,9 +25,9 @@ import com.flip.utils.RedisKeyUtils;
 import com.flip.utils.elastic.ElasticUserUtils;
 import com.flip.validation.VG;
 import io.jsonwebtoken.Claims;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -51,31 +51,25 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Validated(VG.class)
 @RestController
+@RequiredArgsConstructor
 public class AccountController {
 
     @Value("${jwt.auto-refresh-ttl}")
     private Long autoRefreshTTL;
 
-    @Resource
-    private AccountServiceImpl accountService;
+    private final AccountServiceImpl accountService;
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
 
-    @Resource
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Resource
-    private BannedUserService bannedUserService;
+    private final BannedUserService bannedUserService;
 
-    @Resource
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
-    @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    @Resource
-    private ElasticsearchClient elasticsearchClient;
+    private final ElasticsearchClient elasticsearchClient;
 
     /**
      * 用户注册
@@ -145,7 +139,6 @@ public class AccountController {
         String refreshToken = jwtUtils.createRefreshToken(uid);
 
         redisTemplate.opsForValue().set(RedisKeyUtils.getLoggedUserKey(uid), loggedUser);
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         Map<String, Object> map = new HashMap<>();
@@ -153,7 +146,6 @@ public class AccountController {
         map.put("refreshToken", refreshToken);
 
         log.info("{} logged in", loggedUser.getUser().getUsername());
-
         return Response.success(200, "登录成功", map);
     }
 

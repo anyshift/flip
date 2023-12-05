@@ -4,16 +4,16 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.flip.domain.entity.Comment;
 import com.flip.mapper.CommentMapper;
 import com.flip.service.CommentService;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {
 
-    @Resource
-    private CommentMapper commentMapper;
+    private final CommentMapper commentMapper;
 
     @Override
     public List<Comment> getComments(String pid) {
